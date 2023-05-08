@@ -20,7 +20,10 @@
 
 <script>
 export default {
-    name: "Header"
+    name: "Header",
+    beforeMount() {
+        // Рендер в зависимости от авторизации
+    }
 }
 </script>
 

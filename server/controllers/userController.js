@@ -1,6 +1,7 @@
 const {User} = require('../models/models')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const {locals} = require("express/lib/application");
 
 class UserController{
     async registerUser(req, res){

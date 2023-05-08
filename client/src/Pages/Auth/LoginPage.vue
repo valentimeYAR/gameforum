@@ -18,7 +18,7 @@
                         @input="inputPassword"
                 />
                 <div class="buttons-block">
-                    <button class="login" @click="acceptLogin">Войти</button>
+                    <a class="login" href="/" @click="acceptLogin">Войти</a>>
                     <button class="register">Регистрация</button>
                     <button class="forgot-password">Забыли пароль?</button>
                 </div>
@@ -49,6 +49,12 @@ export default {
             axios.post('http://localhost:3000/api/login/',{
                 login: this.login,
                 password: this.password,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                const {token} = res.data
+                localStorage.setItem('token', token)
             })
         }
     }
