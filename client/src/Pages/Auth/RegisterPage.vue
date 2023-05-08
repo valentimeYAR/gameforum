@@ -27,11 +27,18 @@
                 </div>
                 <div class="input-block">
                     <input
-                        type="text"
-                        class="register-input"
-                        v-bind:value="password"
-                        @input="inputPassword"
+                            v-bind:type="showPassword ? 'text' : 'password'"
+                            class="register-input"
+                            v-bind:value="password"
+                            @input="inputPassword"
                     />
+                    <img
+                            src="https://www.svgrepo.com/show/506475/eye-slash.svg"
+                            alt="show password"
+                            class="show-password"
+                            @mouseenter="this.showPassword=true"
+                            @mouseleave="this.showPassword=false"
+                    >
                 </div>
             </div>
             <div class="register-block">
@@ -41,21 +48,24 @@
                 </div>
                 <div class="input-block">
                     <input
-                        type="text"
-                        v-bind:value="email"
-                        @input="inputEmail"
-                        class="register-input"
+                            type="text"
+                            v-bind:value="email"
+                            @input="inputEmail"
+                            class="register-input"
                     />
                 </div>
             </div>
             <div class="buttons-block">
-                <button class="accept">Регистрация</button>
+                <button class="accept" :disabled="!validationLogin" @click="acceptRegistration">Регистрация</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+
+import axios from "axios";
+
 export default {
     name: 'RegisterPage',
     data() {
@@ -63,92 +73,118 @@ export default {
             login: '',
             password: '',
             email: '',
+            validationLogin: false,
+            showPassword: false
         }
     },
-    methods:{
-        inputLogin(e){
+    methods: {
+        inputLogin(e) {
             this.login = e.target.value
+            this.login.length >= 8 ? this.validationLogin = true : this.validationLogin = false
         },
-        inputPassword(e){
+        inputPassword(e) {
             this.password = e.target.value
         },
-        inputEmail(e){
+        inputEmail(e) {
             this.email = e.target.value
+        },
+        acceptRegistration() {
+            axios.post('http://localhost:3000/api/user/', {
+                login: this.login,
+                email: this.email,
+                password: this.password
+            })
         }
-    }
+    },
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrapper {
-    background-color: #171E29;
+  background-color: #171E29;
 }
 
 .container {
-    width: 1400px;
-    margin: 0 auto;
-    height: 100vh;
-    padding-top: 50px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px 0;
+  width: 1400px;
+  margin: 0 auto;
+  height: 100vh;
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px 0;
 }
 
 .title {
-    color: white;
-    font-size: 30px;
+  color: white;
+  font-size: 30px;
 }
 
 .register-block {
-    display: flex;
-    gap: 0 20px;
-    align-items: center;
+  display: flex;
+  gap: 0 20px;
+  align-items: center;
 }
 
 .register-description {
-    color: white;
-    font-size: 20px;
-    text-align: right;
+  color: white;
+  font-size: 20px;
+  text-align: right;
 }
 
 .register-input {
-    width: 800px;
-    padding: 20px;
-    background-color: #1F2B3B;
-    border-radius: 10px;
-    color: white;
-    font-size: 18px;
+  width: 800px;
+  padding: 20px;
+  background-color: #1F2B3B;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
 }
 
 .input-block {
-    display: flex;
-    flex-direction: column;
-    gap: 5px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
+    position: relative;
 }
 
 .input-description {
-    width: 800px;
-    color: #3267A2;
-    font-size: 14px;
+  width: 800px;
+  color: #3267A2;
+  font-size: 14px;
 }
 
 .description-block {
-    display: flex;
-    flex-direction: column;
-    gap: 5px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
 }
 
 .important {
-    font-size: 14px;
-    text-align: left;
-    color: orangered;
+  font-size: 14px;
+  text-align: left;
+  color: orangered;
 }
-.accept{
-    padding: 20px;
-    color: white;
-    background-color: #0078AF;
-    font-size: 20px;
-    border-radius: 10px;
+
+.accept {
+  padding: 20px;
+  color: white;
+  background-color: #0078AF;
+  font-size: 20px;
+  border-radius: 10px;
+
+  &:disabled {
+    background-color: gray;
+  }
+}
+.show-password{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    &:hover{
+        transform: rotateY(-10px);
+    }
 }
 </style>
