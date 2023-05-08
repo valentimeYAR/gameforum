@@ -1,11 +1,13 @@
 const {User} = require('../models/models')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 class UserController{
     async registerUser(req, res){
         const {login, password, email} = req.body
+        const hashedPassword = await bcrypt.hash(password, 10)
         const user = await User.create({
-            login: login, password: password, email: email
+            login: login, password: hashedPassword, email: email
         })
         return res.status(200).json(user)
     }
@@ -15,12 +17,12 @@ class UserController{
         return res.status(200).json(user)
     }
     async loginUser(req, res){
-
         const {login, password} = req.body
         const findUser = await User.findOne({where:{login: login}})
-        if(findUser && findUser.password === password){
+        const comparePassword = await bcrypt.compare(password, findUser.password)
+        if(findUser && comparePassword){
             const token = jwt.sign({login: login}, 'secret')
-            return res.json({token})
+            return res.json({token, message: 'Authentication successful'})
         }else{
             return res.status(400).json({message: 'Password or login is incorrect'})
         }
@@ -29,8 +31,8 @@ class UserController{
         const authHeader = req.headers.authorization
         const token = authHeader && authHeader.split(" ")[1]
         jwt.verify(token, 'secret', (async (err, user) => {
-            const userInfo = await User.findOne({where:{login: user.login}})
-            return res.status(200).json(userInfo)
+            const {id, email} = await User.findOne({where:{login: user.login}})
+            return res.status(200).json({id, email})
         }))
     }
 }
