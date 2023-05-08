@@ -12,7 +12,7 @@
             </div>
             <div :class="$style.auth">
                 <a href="/" :class="$style.loginBtn">Войти</a>
-                <a href="/" :class="$style.registerBtn">Регистрация</a>
+                <router-link to="/register" :class="$style.registerBtn">Регистрация</router-link>
             </div>
         </div>
     </div>
