@@ -11,14 +11,14 @@
                         @input="inputLogin"
                 />
                 <input
-                        type="text"
+                        type="password"
                         placeholder="Password..."
                         class="input"
                         v-bind:value="password"
                         @input="inputPassword"
                 />
                 <div class="buttons-block">
-                    <a class="login" href="/" @click="acceptLogin">Войти</a>>
+                    <a class="login" href="/" @click="acceptLogin">Войти</a>
                     <button class="register">Регистрация</button>
                     <button class="forgot-password">Забыли пароль?</button>
                 </div>
