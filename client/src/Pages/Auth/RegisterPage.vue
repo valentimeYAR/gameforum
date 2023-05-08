@@ -22,7 +22,7 @@
             </div>
             <div class="register-block">
                 <div class="description-block">
-                    <p class="register-description" style="padding-right: 100px">Пароль: </p>
+                    <p class="register-description" style="padding-right: 105px">Пароль: </p>
                     <p class="important">Обязательно</p>
                 </div>
                 <div class="input-block">
