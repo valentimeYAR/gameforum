@@ -94,6 +94,7 @@ export default {
                 email: this.email,
                 password: this.password
             })
+            this.$router.push('/login')
         }
     },
 }

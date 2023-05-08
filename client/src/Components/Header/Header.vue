@@ -11,7 +11,7 @@
                 <a href="/" :class="$style.menuBtn">Пользователи</a>
             </div>
             <div :class="$style.auth">
-                <a href="/" :class="$style.loginBtn">Войти</a>
+                <router-link to="/login" :class="$style.loginBtn">Войти</router-link>
                 <router-link to="/register" :class="$style.registerBtn">Регистрация</router-link>
             </div>
         </div>
