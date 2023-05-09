@@ -15,7 +15,10 @@
                 <router-link to="/register" :class="$style.registerBtn">Регистрация</router-link>
             </div>
             <div :class="$style.auth" v-if="this.verification">
-                <div :class="$style.avatar"></div>
+                <div>
+                    <div :class="$style.notAvatar" v-if="userInfo.avatar === null"></div>
+                    <img :src="userInfo.avatar.path" v-if="userInfo.avatar" alt="avatar" :class="$style.avatar">
+                </div>
                 <a href="/" :class="$style.name">{{userInfo.login}}</a>
                 <img src="https://www.svgrepo.com/show/231260/messages-mails.svg" alt="" :class="$style.messages">
                 <img src="https://www.svgrepo.com/show/469394/notification.svg" alt="" :class="$style.notifications">
@@ -76,10 +79,15 @@ export default {
     color: white;
     font-size: 18px;
 }
-.avatar{
-    width: 20px;
-    height: 20px;
+.notAvatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     background-color: gray;
+}
+.avatar{
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 .wrapper {

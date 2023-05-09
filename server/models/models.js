@@ -12,9 +12,11 @@ const User = sequelize.define('user', {
 const Avatar = sequelize.define('avatar',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
     path: {type: DataTypes.STRING, allowNull: false},
-    userid: {type: DataTypes.INTEGER}
+    userId: {type: DataTypes.INTEGER}
 })
-Avatar.belongsTo(User, {foreignKey: 'userid'})
+
+User.hasOne(Avatar, {foreignKey: 'userId'})
+Avatar.belongsTo(User, {foreignKey: 'userId'})
 
 module.exports = {
     User, Avatar
