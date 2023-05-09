@@ -11,6 +11,5 @@ router.get('/get-auth/', userController.getUserInfo)
 
 // Avatar
 router.post('/avatar/', avatarController.addAvatar)
-router.get('/avatar/', avatarController.getAvatar)
 
 module.exports = router

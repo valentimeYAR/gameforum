@@ -19,7 +19,7 @@
                     <div :class="$style.notAvatar" v-if="userInfo.avatar === null"></div>
                     <img :src="userInfo.avatar.path" v-if="userInfo.avatar" alt="avatar" :class="$style.avatar">
                 </div>
-                <a href="/" :class="$style.name">{{userInfo.login}}</a>
+                <a href="/member/1" :class="$style.name">{{userInfo.login}}</a>
                 <img src="https://www.svgrepo.com/show/231260/messages-mails.svg" alt="" :class="$style.messages">
                 <img src="https://www.svgrepo.com/show/469394/notification.svg" alt="" :class="$style.notifications">
                 <img src="https://www.svgrepo.com/show/384394/find-glass-magnifier-search-seo.svg" alt="" :class="$style.find">
