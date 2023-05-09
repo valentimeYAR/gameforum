@@ -11,8 +11,6 @@ const User = sequelize.define('user', {
 
 const Avatar = sequelize.define('avatar',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
-    filename: {type: DataTypes.STRING, allowNull: false},
-    mimetype: {type: DataTypes.STRING, allowNull: false},
     path: {type: DataTypes.STRING, allowNull: false},
     userid: {type: DataTypes.INTEGER}
 })

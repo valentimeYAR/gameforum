@@ -10,24 +10,78 @@
                 <a href="/" :class="$style.menuBtn">Что нового?</a>
                 <a href="/" :class="$style.menuBtn">Пользователи</a>
             </div>
-            <div :class="$style.auth">
+            <div :class="$style.Notauth" v-if="!this.verification">
                 <router-link to="/login" :class="$style.loginBtn">Войти</router-link>
                 <router-link to="/register" :class="$style.registerBtn">Регистрация</router-link>
+            </div>
+            <div :class="$style.auth" v-if="this.verification">
+                <div :class="$style.avatar"></div>
+                <a href="/" :class="$style.name">{{userInfo.login}}</a>
+                <img src="https://www.svgrepo.com/show/231260/messages-mails.svg" alt="" :class="$style.messages">
+                <img src="https://www.svgrepo.com/show/469394/notification.svg" alt="" :class="$style.notifications">
+                <img src="https://www.svgrepo.com/show/384394/find-glass-magnifier-search-seo.svg" alt="" :class="$style.find">
             </div>
         </div>
     </div>
 </template>
 
 <script>
+
+
+import axios from "axios";
+
 export default {
     name: "Header",
+    data(){
+        return {
+            verification: false,
+            userInfo: {}
+        }
+    },
     beforeMount() {
-        // Рендер в зависимости от авторизации
+        const token = localStorage.getItem("token")
+        axios.get('http://localhost:3000/api/get-auth/',{
+            headers:{
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(response => {
+            if(response.status === 200) {
+                this.verification = true
+                this.userInfo = response.data
+            }else console.log(response.status)
+        })
     }
 }
 </script>
 
 <style module lang="scss">
+.find{
+    width: 20px;
+    height: 20px;
+}
+.notifications{
+    width: 20px;
+    height: 20px;
+}
+.messages{
+    width: 20px;
+    height: 20px;
+}
+.auth{
+    display: flex;
+    align-items: center;
+    gap: 0 20px;
+}
+.name{
+    color: white;
+    font-size: 18px;
+}
+.avatar{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    border-radius: 50%;
+}
 .wrapper {
   background: rgb(21, 50, 71);
   background: linear-gradient(90deg, rgba(21, 50, 71, 1) 0%, rgba(21, 50, 71, 1) 100%, rgba(9, 9, 121, 1) 100%);
@@ -103,7 +157,7 @@ export default {
   }
 }
 
-.auth {
+.Notauth {
   display: flex;
   font-size: 20px;
   gap: 0 40px;

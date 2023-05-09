@@ -6,6 +6,6 @@ const userController = require('../controllers/userController')
 router.post('/user/', userController.registerUser)
 router.get('/user', userController.getUser)
 router.post('/login', userController.loginUser)
-router.get('/user-info/', userController.getUserInfo)
+router.get('/get-auth/', userController.getUserInfo)
 
 module.exports = router

@@ -31,10 +31,14 @@ class UserController{
     async getUserInfo(req, res){
         const authHeader = req.headers.authorization
         const token = authHeader && authHeader.split(" ")[1]
-        jwt.verify(token, 'secret', (async (err, user) => {
-            const {id, email} = await User.findOne({where:{login: user.login}})
-            return res.status(200).json({id, email})
+        const decoded  = jwt.verify(token, 'secret', (async (err, decoded) => {
+            return decoded
         }))
+        const userInfo = await decoded.then(async res=> {
+            let user = await User.findOne({where:{login: res.login}})
+            return user
+        })
+        return res.status(200).json(userInfo)
     }
 }
 
