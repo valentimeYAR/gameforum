@@ -19,7 +19,7 @@
                     <div :class="$style.notAvatar" v-if="userInfo.avatar === null"></div>
                     <img :src="userInfo.avatar.path" v-if="userInfo.avatar" alt="avatar" :class="$style.avatar">
                 </div>
-                <a href="/member/1" :class="$style.name">{{userInfo.login}}</a>
+                <a :href="'/member/' + this.userInfo.id" :class="$style.name">{{userInfo.login}}</a>
                 <img src="https://www.svgrepo.com/show/231260/messages-mails.svg" alt="" :class="$style.messages">
                 <img src="https://www.svgrepo.com/show/469394/notification.svg" alt="" :class="$style.notifications">
                 <img src="https://www.svgrepo.com/show/384394/find-glass-magnifier-search-seo.svg" alt="" :class="$style.find">
@@ -42,17 +42,21 @@ export default {
         }
     },
     beforeMount() {
-        const token = localStorage.getItem("token")
-        axios.get('http://localhost:3000/api/get-auth/',{
-            headers:{
-                'Authorization': 'Bearer ' + token
-            }
-        }).then(response => {
-            if(response.status === 200) {
-                this.verification = true
-                this.userInfo = response.data
-            }else console.log(response.status)
-        })
+        try{
+            const token = localStorage.getItem("token")
+            axios.get('http://localhost:3000/api/get-auth/',{
+                headers:{
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then(response => {
+                if(response.status === 200) {
+                    this.verification = true
+                    this.userInfo = response.data
+                }else console.log(response.status)
+            }).catch(err => console.log(err.response.status))
+        }catch(e){
+            console.log(e)
+        }
     }
 }
 </script>

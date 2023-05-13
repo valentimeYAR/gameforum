@@ -124,7 +124,7 @@ export default {
 
 .wrapper {
   background-color: #171E29;
-  height: 100%;
+  min-height: 100vh;
   color: white;
 
 }

@@ -4,12 +4,19 @@ const bcrypt = require('bcrypt')
 
 class UserController {
     async registerUser(req, res) {
-        const {login, password, email} = req.body
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const user = await User.create({
-            login: login, password: hashedPassword, email: email
-        })
-        return res.status(200).json(user)
+        try {
+            const {login, password, email} = req.body
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const findUser = await User.findOne({where: {login: login}})
+            if (findUser) {
+                return res.status(403).json({message: 'Пользователь с таким именем существует!'})
+            } else {
+                const user = await User.create({login: login, password: hashedPassword, email: email})
+                return res.status(200).json(user)
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async getUser(req, res) {
@@ -31,16 +38,15 @@ class UserController {
     }
 
     async getUserInfo(req, res) {
-        const authHeader = req.headers.authorization
-        const token = authHeader && authHeader.split(" ")[1]
-        const decoded = jwt.verify(token, 'secret', (async (err, decoded) => {
-            return decoded
-        }))
-        const userInfo = await decoded.then(async res => {
-            let user = await User.findOne({where: {login: res.login}, include: 'avatar'})
-            return user
-        })
-        return res.status(200).json(userInfo)
+        try{
+            const authHeader = req.headers.authorization
+            const token = authHeader && authHeader.split(" ")[1]
+            const decoded = jwt.verify(token, 'secret')
+            const user = await User.findOne({login: decoded.login, include: 'avatar'})
+            return res.status(200).json(user)
+        }catch(e){
+
+        }
     }
 }
 
