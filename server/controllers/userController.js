@@ -26,25 +26,33 @@ class UserController {
     }
 
     async loginUser(req, res) {
-        const {login, password} = req.body
-        const findUser = await User.findOne({where: {login: login}})
-        const comparePassword = await bcrypt.compare(password, findUser.password)
-        if (findUser && comparePassword) {
-            const token = jwt.sign({login: login}, 'secret')
-            return res.json({token, message: 'Authentication successful'})
-        } else {
-            return res.status(400).json({message: 'Password or login is incorrect'})
+        try {
+            const {login, password} = req.body
+            const findUser = await User.findOne({where: {login: login}})
+            if (!findUser) {
+                return res.status(400).json({message: 'Неверный пароль или логин!'})
+            } else {
+                const comparePassword = await bcrypt.compare(password, findUser.password)
+                if (findUser && comparePassword) {
+                    const token = jwt.sign({login: login}, 'secret')
+                    return res.json({token, message: 'Authentication successful'})
+                } else {
+                    return res.status(400).json({message: 'Неверный пароль или логин!'})
+                }
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     async getUserInfo(req, res) {
-        try{
+        try {
             const authHeader = req.headers.authorization
             const token = authHeader && authHeader.split(" ")[1]
             const decoded = jwt.verify(token, 'secret')
             const user = await User.findOne({login: decoded.login, include: 'avatar'})
             return res.status(200).json(user)
-        }catch(e){
+        } catch (e) {
 
         }
     }

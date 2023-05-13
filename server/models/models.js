@@ -6,11 +6,11 @@ const User = sequelize.define('user', {
     login: {type: DataTypes.STRING, unique: true},
     email: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
-    role: {type: DataTypes.STRING},
+    role: {type: DataTypes.STRING, defaultValue: "Пользователь"},
     lastLogin: {type: DataTypes.STRING},
-    messages: {type: DataTypes.INTEGER},
-    reactions: {type: DataTypes.INTEGER},
-    scores: {type: DataTypes.INTEGER}
+    messages: {type: DataTypes.INTEGER, defaultValue: 0},
+    reactions: {type: DataTypes.INTEGER, defaultValue:0},
+    scores: {type: DataTypes.INTEGER, defaultValue:0}
 })
 
 

@@ -8,41 +8,48 @@
                 </div>
                 <div class="user-info">
                     <p class="name">{{ userInfo.login }}</p>
-                    <div class="role">Пользователь</div>
+                    <div class="role">{{userInfo.role}}</div>
                     <p class="register date-block"><span>Дата регистрации:</span> 25.05.2017</p>
                     <p class="last-active date-block"><span>Последняя активность: </span>49 минут назад</p>
                 </div>
-                <div class="edit-profile">Редактировать фото профиля</div>
+                <div class="edit-profile" @click="popup = true">Редактировать фото профиля</div>
             </div>
             <div class="bottom-wrapper">
                 <div class="bottom-container">
                     <div class="messages-block bottom-block">
                         <p class="block-title">Сообщения</p>
-                        <p class="quantity">8</p>
+                        <p class="quantity">{{userInfo.messages}}</p>
                     </div>
                     <div class="reactions-block bottom-block">
                         <p class="block-title">Реакции</p>
-                        <p class="quantity">1</p>
+                        <p class="quantity">{{userInfo.reactions}}</p>
                     </div>
                     <div class="scores-block bottom-block">
                         <p class="block-title">Баллы</p>
-                        <p class="quantity">256</p>
+                        <p class="quantity">{{userInfo.scores}}</p>
                     </div>
                 </div>
             </div>
         </div>
+        <ChangeAvatar v-if="popup" :popup="popup" @update:popup="closePopup" :id="userInfo.id"/>
     </div>
 </template>
 
 <script>
 import axios from "axios";
-import Header from "@/App.vue";
+import ChangeAvatar from "@/Pages/Pofile/ChangeAvatar.vue";
 export default {
     name: "ProfilePage",
-    components: {Header},
+    components: {ChangeAvatar},
     data() {
         return {
-            userInfo: {}
+            userInfo: {},
+            popup: false
+        }
+    },
+    methods:{
+        closePopup(value){
+            this.popup = value
         }
     },
     beforeMount() {
@@ -102,7 +109,7 @@ export default {
 .wrapper {
   background-color: #171E29;
   padding-top: 50px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .container {

@@ -10,7 +10,7 @@ router.post('/login', userController.loginUser)
 router.get('/get-auth/', userController.getUserInfo)
 
 // Avatar
-router.post('/avatar/', avatarController.addAvatar)
+router.post('/avatar/:id', avatarController.addAvatar)
 router.put('/avatar/:id', avatarController.updateAvatar)
 
 module.exports = router

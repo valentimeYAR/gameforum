@@ -7,19 +7,20 @@
                         type="text"
                         placeholder="Login..."
                         class="input"
-                        v-bind:value="login"
-                        @input="inputLogin"
+                        v-model="login"
+                        @focus="response = null"
                 />
                 <input
                         type="password"
                         placeholder="Password..."
                         class="input"
-                        v-bind:value="password"
-                        @input="inputPassword"
+                        v-model="password"
+                        @focus="response = null"
                 />
+                <a class="error" v-if="response">{{ response }}</a>
                 <div class="buttons-block">
                     <a class="login" href="/" @click="acceptLogin">Войти</a>
-                    <button class="register">Регистрация</button>
+                    <a href='/register' class="register">Регистрация</a>
                     <button class="forgot-password">Забыли пароль?</button>
                 </div>
             </div>
@@ -36,17 +37,12 @@ export default {
         return {
             login: '',
             password: '',
+            response: null
         }
     },
     methods: {
-        inputLogin(e) {
-            this.login = e.target.value
-        },
-        inputPassword(e) {
-            this.password = e.target.value
-        },
-        acceptLogin(){
-            axios.post('http://localhost:3000/api/login/',{
+        acceptLogin() {
+            axios.post('http://localhost:3000/api/login/', {
                 login: this.login,
                 password: this.password,
                 headers: {
@@ -55,6 +51,8 @@ export default {
             }).then(res => {
                 const {token} = res.data
                 localStorage.setItem('token', token)
+            }).catch(err => {
+                this.response = err.response.data.message
             })
         }
     }
@@ -64,6 +62,7 @@ export default {
 <style scoped lang="scss">
 .wrapper {
   background-color: #171E29;
+    min-height: 100vh;
 }
 
 .container {
@@ -81,55 +80,70 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px 0;
+  align-items: center;
 }
-.input{
-    width: 700px;
-    padding: 20px;
-    background-color: #1F2B3B;
-    border-radius: 10px;
+
+.input {
+  width: 700px;
+  padding: 20px;
+  background-color: #1F2B3B;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+}
+
+.title {
+  color: white;
+  font-size: 30px;
+}
+
+.buttons-block {
+  display: flex;
+  gap: 0 20px;
+  justify-content: center;
+}
+
+.login {
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: palegreen;
+  border: 1px solid palegreen;
+
+  &:hover {
+    background-color: transparent;
     color: white;
-    font-size: 18px;
+  }
 }
-.title{
+
+.register {
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: darkgray;
+  border: 1px solid darkgray;
+
+  &:hover {
+    background-color: transparent;
     color: white;
-    font-size: 30px;
+  }
 }
-.buttons-block{
-    display: flex;
-    gap: 0 20px;
-    justify-content: center;
+
+.forgot-password {
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: red;
+  border: 1px solid red;
+
+  &:hover {
+    background-color: transparent;
+    color: white;
+  }
 }
-.login{
-    padding: 20px;
+.error{
     font-size: 20px;
-    border-radius: 10px;
-    background-color: palegreen;
-    border: 1px solid palegreen;
-    &:hover{
-        background-color: transparent;
-        color: white;
-    }
-}
-.register{
-    padding: 20px;
-    font-size: 20px;
-    border-radius: 10px;
-    background-color: darkgray;
-    border: 1px solid darkgray;
-    &:hover{
-        background-color: transparent;
-        color: white;
-    }
-}
-.forgot-password{
-    padding: 20px;
-    font-size: 20px;
-    border-radius: 10px;
-    background-color: red;
-    border: 1px solid red;
-    &:hover{
-        background-color: transparent;
-        color: white;
-    }
+    color: red;
+    font-weight: 700;
 }
 </style>
